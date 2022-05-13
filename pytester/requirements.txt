@@ -1,0 +1,17 @@
+requests
+pytest
+paramiko
+pytest-xdist
+bottle
+httpserver
+netifaces
+cryptography
+jinja2
+scp
+deepdiff
+allure-pytest
+XenAPI
+urllib3
+requests_toolbelt
+pythontail
+multiping

@@ -1,0 +1,19 @@
+{
+  "name": "E2EVMConfig",
+  "cpu_model": "vCPU",
+  "numa": "off",
+  "cpu_num": 4,
+  "mem_num": 16,
+  "hugepage": 4,
+  "isolate": "2-3",
+  "ovs": "on",
+  "ovs_core": "2",
+  "nts": "off",
+  "nts_core": "",
+  "ecs_ver": "latest",
+  "openness_ver": "19.09",
+  "role": "MEC",
+  "rt_kernel": "on",
+  "socket_num": 1,
+  "network": "int,oam,xhaul"
+}

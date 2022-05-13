@@ -1,0 +1,61 @@
+FROM centos:7.8.2003
+
+ENV GO111MODULE on
+ENV TF_LOG DEBUG 
+ENV TF_LOG_PATH /tmp/tf_caep.log
+
+#RUN apk add bash git wget util-linux pkgconfig libvirt-dev build-base qemu-img qemu-system-x86_64 bash curl
+RUN yum install -y make gcc vim git wget unzip
+
+WORKDIR /root/terraform-provider-caep
+RUN wget https://releases.hashicorp.com/terraform/1.0.5/terraform_1.0.5_linux_amd64.zip && \
+        unzip ./terraform_1.0.5_linux_amd64.zip -d /usr/local/bin && rm -f terraform_1.0.5_linux_amd64.zip
+
+RUN wget https://dl.google.com/go/go1.17.2.linux-amd64.tar.gz && \
+    tar xzf ./go1.17.2.linux-amd64.tar.gz -C /usr/local &&    \
+    printf "export PATH=\$PATH:/usr/local/go/bin\n" >> /root/.bashrc &&  \
+    rm -f go1.17.2.linux-amd64.tar.gz
+
+COPY ./ ./
+
+RUN source /root/.bashrc && \
+    cd /root/terraform-provider-caep && \
+    make install
+#    /usr/local/go/bin/go mod init terraform-provider-caep && \
+#    /usr/local/go/bin/go get github.com/hashicorp/terraform-plugin-sdk/terraform && \
+#    /usr/local/go/bin/go get github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema && \
+#    /usr/local/go/bin/go get github.com/hashicorp/terraform-plugin-go/tfprotov5/internal/tfplugin5@v0.4.0 && \
+#    /usr/local/go/bin/go get github.com/hashicorp/terraform-plugin-sdk/v2/plugin@v2.8.0 &&  \
+#    CGO_ENABLE=0 GOOS=linux GOARCH=amd64 /usr/local/go/bin/go build -o ./terraform-provider-caep ./main.go
+
+#ENV port "12345"
+#EXPOSE 12345 
+
+RUN yum -y install openssh-server openssh-clients initscripts
+
+RUN ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -N ''
+RUN ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key -N ''
+RUN ssh-keygen -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -N ''
+RUN ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -N ''
+
+#RUN sed -i "s/#UsePrivilegeSeparation.*/UsePrivilegeSeparation no/g" /etc/ssh/sshd_config
+#RUN sed -i "s/UsePAM.*/UsePAM no/g" /etc/ssh/sshd_config
+RUN sed -i 's/PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+
+RUN useradd -ms /bin/bash faca &&   \
+    mkdir -p /home/faca/.ssh    &&  \
+    ssh-keygen -t ecdsa -N '' -f /home/faca/.ssh/faca_id_ecdsa  &&  \
+    cp /home/faca/.ssh/faca_id_ecdsa.pub /home/faca/.ssh/authorized_keys   &&  \
+    chown faca.faca -R /home/faca   &&  \
+    chmod 0400  /home/faca/.ssh/faca_id_ecdsa
+
+
+EXPOSE 22
+# setup new root password
+# setup new root password
+RUN echo root:pass | chpasswd
+
+
+#CMD ["/tf_caep_provider_bin","--listen-port=12345","--log-level=debug"]
+#CMD ["/usr/sbin/init"]
+CMD ["/usr/sbin/sshd","-D"]
