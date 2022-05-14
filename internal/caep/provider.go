@@ -29,29 +29,6 @@ func New(version string) func() *schema.Provider {
 	return func() *schema.Provider {
 
 		eghostSchema := map[string]*schema.Schema{
-			/*
-						"username": &schema.Schema{
-							Type:        schema.TypeString,
-							Optional:    true,
-							DefaultFunc: schema.EnvDefaultFunc("CAEP_USERNAME", nil),
-						},
-						"password": &schema.Schema{
-							Type:        schema.TypeString,
-							Optional:    true,
-							Sensitive:   true,
-							DefaultFunc: schema.EnvDefaultFunc("CAEP_PASSWORD", nil),
-						},
-						"aio_ip_csv": &schema.Schema{
-							Type:        schema.TypeString,
-							Optional:    true,
-							Sensitive:   true,
-							DefaultFunc: schema.EnvDefaultFunc("CAEP_HOST", nil),
-						},
-						"aio_name_csv": &schema.Schema{
-							Type:      schema.TypeString,
-							Optional:  true,
-							Sensitive: true,
-			        },*/
 			"aio_workers": &schema.Schema{
 				Type:     schema.TypeList,
 				Required: true,
@@ -98,28 +75,6 @@ func New(version string) func() *schema.Provider {
 		}
 
 		p := &schema.Provider{
-			/*
-				Schema: map[string]*schema.Schema{
-
-					"username": &schema.Schema{
-						Type:        schema.TypeString,
-						Optional:    true,
-						DefaultFunc: schema.EnvDefaultFunc("CAEP_USERNAME", nil),
-					},
-					"password": &schema.Schema{
-						Type:        schema.TypeString,
-						Optional:    true,
-						Sensitive:   true,
-						DefaultFunc: schema.EnvDefaultFunc("CAEP_PASSWORD", nil),
-					},
-					"host": &schema.Schema{
-						Type:        schema.TypeString,
-						Optional:    true,
-						Sensitive:   true,
-						DefaultFunc: schema.EnvDefaultFunc("CAEP_HOST", nil),
-					},
-				},*/
-
 			Schema: eghostSchema,
 			ResourcesMap: map[string]*schema.Resource{
 				//"caep_resource": resourceCaep(),
