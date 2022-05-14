@@ -10,7 +10,8 @@ default: install
 
 build:
 	go mod init ${BINARY}
-	/usr/local/go/bin/go mod vendor
+	/usr/local/go/bin/go mod tidy -go=1.16 && /usr/local/go/bin/go mod tidy -go=1.17
+	/usr/local/go/bin/go mod vendor	 
 	CGO_ENABLE=0 GOOS=linux GOARCH=amd64 /usr/local/go/bin/go build -o ${BINARY}
 
 release:
