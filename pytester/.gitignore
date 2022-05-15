@@ -1,9 +1,0 @@
-.idea/
-*__pycache__/
-.vscode/
-venv/
-.pytest_cache/
-*.swp
-.DS_Store
-tests/certs/*.crt
-*.code-workspace
