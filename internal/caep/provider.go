@@ -212,14 +212,14 @@ func configure(version string, p *schema.Provider) func(context.Context, *schema
 			hm.ApiToken = apiToken
 
 			uri := fmt.Sprintf("http://%s:10286/health", hostIp)
-			egHostHealth, _ := CaepApiGet(meta, hm, uri)
+			egHostHealth, _ := caep.CaepApiGet(meta, hm, uri)
 			regExpression := fmt.Sprintf("=[0-9a-z\\-]{36},online=%s", hostIp)
 			re := regexp.MustCompile(regExpression)
 			matches := re.FindStringSubmatch(egHostHealth.Message)
 			if matches != nil {
 				node_id := matches[0][1:37]
 				//uri := fmt.Sprintf("http://%s:10288/compute/usable", hostIp)
-				//apiRes, _ := CaepApiComputeUsable(meta, uri)
+				//apiRes, _ := caep.CaepApiComputeUsable(meta, uri)
 				uri := fmt.Sprintf("http://%s:10288/hwresources", hostIp)
 				//meta.ApiToken = apiToken
 				apiRes, _ := CaepApiGet(meta, hm, uri)
