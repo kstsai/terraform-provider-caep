@@ -23,12 +23,12 @@ jobs:
     - name: Login to DockerHub
       uses: docker/login-action@v2
       with:
-          username: kstsai
-          password: hand@LZC0416
+          username: ${{ secrects.DOCKER_USERNAME }}
+          password: ${{ secrects.DOCKER_PASSWORD }}
     - name: Build and push          
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
           image: kstsai/terraform-provider-caep 
           registry: docker.io
-          username: kstsai
-          password: hand@LZC0416
+          username: ${{ secrects.DOCKER_USERNAME }}
+          password: ${{ secrects.DOCKER_PASSWORD }}
