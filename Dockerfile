@@ -9,10 +9,10 @@ ENV TF_LOG_PATH /tmp/tf_caep.log
 RUN yum install -y make gcc vim git wget unzip
 
 WORKDIR /root/terraform-provider-caep
-RUN wget https://releases.hashicorp.com/terraform/1.0.5/terraform_1.0.5_linux_amd64.zip && \
+RUN wget -q https://releases.hashicorp.com/terraform/1.0.5/terraform_1.0.5_linux_amd64.zip && \
         unzip ./terraform_1.0.5_linux_amd64.zip -d /usr/local/bin && rm -f terraform_1.0.5_linux_amd64.zip
 
-RUN wget https://dl.google.com/go/go1.17.2.linux-amd64.tar.gz && \
+RUN wget -q https://dl.google.com/go/go1.17.2.linux-amd64.tar.gz && \
     tar xzf ./go1.17.2.linux-amd64.tar.gz -C /usr/local &&    \
     printf "export PATH=\$PATH:/usr/local/go/bin\n" >> /root/.bashrc &&  \
     rm -f go1.17.2.linux-amd64.tar.gz
@@ -56,13 +56,13 @@ EXPOSE 22
 EXPOSE 10287
 
 
-RUN yum install -y git unzip nmap wget python3 pip3
-RUN pip3 install --user pytest
+#RUN yum install -y git unzip nmap wget python3 pip3
+#RUN pip3 install --user pytest
 
 #ADD ./pytester.tgz / 
-RUN mv ./pytester /
-RUN pip3 install --user -r /pytester/pytest.req.txt
-RUN chmod +x /root/terraform-provider-caep/entrypoint.sh
+#RUN mv ./pytester /
+#RUN pip3 install --user -r /pytester/pytest.req.txt
+#RUN chmod +x /root/terraform-provider-caep/entrypoint.sh
 
 #CMD ["/tf_caep_provider_bin","--listen-port=12345","--log-level=debug"]
 #CMD ["/usr/sbin/init"]
