@@ -30,5 +30,5 @@ jobs:
       with:
           image: kstsai/terraform-provider-caep 
           registry: docker.io
-          username: kstsai
-          password: hand@LZC0416
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
